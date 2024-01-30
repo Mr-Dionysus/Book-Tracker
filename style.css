@@ -1,0 +1,76 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+        "Apple Color Emoji", "Segoe UI", "Emoji", "Segoe UI Symbol";
+}
+
+body {
+    height: auto;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    background: rgba(233, 197, 106, 0.457);
+}
+
+p {
+    font-size: 1em;
+    letter-spacing: 0.05em;
+    line-height: calc(1ex / 0.32);
+}
+
+footer {
+    margin-top: auto;
+}
+
+.b-body {
+    height: 100vh;
+    display: flex;
+    width: 80vw;
+    border: 3px solid rgba(165, 42, 42, 0.536);
+    border-radius: 3px;
+}
+
+.b-shelf {
+    height: 200px;
+    width: 80vw;
+    padding: 0px 15px;
+    display: grid;
+    flex-wrap: wrap;
+    align-items: center;
+    grid-template-columns: repeat(40, 100px);
+    overflow: hidden;
+    border: 3px solid rgba(165, 42, 42, 0.536);
+}
+
+.b-book {
+    width: 180px;
+    height: 40px;
+    margin-bottom: -11px;
+    border: 2px solid rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    background-color: #dda25ebc;
+    transform: rotate(-75deg);
+}
+
+.icon-add-book {
+    height: 40px;
+    transform: scale(0);
+    transition: transform 0.3s;
+    cursor: pointer;
+}
+
+.b-genre:hover > .b-shelf > .icon-add-book {
+    transform: scale(1);
+}
+
+.b-genre:nth-of-type(1) .b-book:nth-of-type(2) {
+    transform: translateX(25px);
+}
+
+.b-genre:nth-of-type(1) .b-book:nth-of-type(3) {
+    transform: translateX(-10px);
+}
