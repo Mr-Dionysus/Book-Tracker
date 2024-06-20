@@ -38,7 +38,7 @@ const thinkingFastAndSlow = new Book(
     "Daniel Kahneman",
     "Non-fiction",
     499,
-    "Not Read"
+    "Read"
 );
 
 const test = new Book(
@@ -74,6 +74,10 @@ const showNewBook = function (newBook) {
     shelf.insertBefore(bottomBorderBox, add);
     books = document.querySelectorAll(".book");
 
+    if (newBook.read === "Read") {
+        book.classList.add("book-read");
+    }
+
     addBookToLibrary(newBook);
 };
 
@@ -91,48 +95,49 @@ window.addEventListener("click", (e) => {
         case "icon-close-pop-up":
             popUp.classList.add("not-visible");
             break;
+
+        case "btn-add":
+            e.preventDefault();
+            const title = document.querySelector("#title").value;
+            const author = document.querySelector("#author").value;
+            const genre = document.querySelector("#genre").value;
+            const pages = document.querySelector("#pages").value;
+
+            // Add Read or Not Read info
+            const read = document.querySelector("#read");
+            const notRead = document.querySelector("#not-read");
+            let isRead = "";
+            console.log(`read = `, read);
+
+            if (read.checked === true && notRead.checked === false) {
+                isRead = read.value;
+            } else if (read.checked === false && notRead.checked === true) {
+                isRead = notRead.value;
+            }
+
+            const newBook = new Book(title, author, genre, pages, isRead);
+
+            addBookToLibrary(newBook);
+            showNewBook(newBook);
+
+            document.querySelector("#title").value = "";
+            document.querySelector("#author").value = "";
+            document.querySelector("#genre").value = "";
+            document.querySelector("#pages").value = "";
+
+            popUp.classList.add("not-visible");
+            break;
     }
 });
 
 window.addEventListener("mouseover", (e) => {
-    if (e.target.className === "btn-add") {
-        e.preventDefault();
-        const title = document.querySelector("#title").value;
-        const author = document.querySelector("#author").value;
-        const genre = document.querySelector("#genre").value;
-        const pages = document.querySelector("#pages").value;
-
-        // Add Read or Not Read info
-        const read = document.querySelector("#read");
-        const notRead = document.querySelector("#not-read");
-        let isRead = "";
-        console.log(`read = `, read);
-
-        if (read.checked === true && notRead.checked === false) {
-            isRead = read.value;
-        } else if (read.checked === false && notRead.checked === true) {
-            isRead = notRead.value;
-        }
-
-        const newBook = new Book(title, author, genre, pages, isRead);
-
-        addBookToLibrary(newBook);
-        showNewBook(newBook);
-
-        document.querySelector("#title").value = "";
-        document.querySelector("#author").value = "";
-        document.querySelector("#genre").value = "";
-        document.querySelector("#pages").value = "";
-
-        popUp.classList.add("not-visible");
-    }
-
     if (
         (e.target.tagName === "H1" ||
             e.target.className === "book" ||
             e.target.className === "b-book") &&
         (e.target.parentElement.className === "book" ||
-            e.target.parentElement.className === "book book-chosen")
+            e.target.parentElement.className === "book book-chosen" ||
+            e.target.parentElement.className === "book book-read")
     ) {
         library.forEach((book) => {
             if (book.title === e.target.innerText) {
@@ -143,7 +148,11 @@ window.addEventListener("mouseover", (e) => {
 
                 const allBooks = document.querySelectorAll(".book.book-chosen");
                 allBooks.forEach((oneBook) => {
-                    oneBook.className = "book";
+                    if (oneBook.classList.contains("book-read")) {
+                        oneBook.className = "book book-read";
+                    } else {
+                        oneBook.className = "book";
+                    }
                 });
 
                 const hiddenBoxDelete = document.querySelector(
@@ -160,7 +169,7 @@ window.addEventListener("mouseover", (e) => {
 
                 hiddenBox.className = "hidden-box";
                 bookPopUp.className = "book-pop-up";
-                e.target.parentElement.className = "book book-chosen";
+                e.target.parentElement.classList.add("book-chosen");
                 bookPopUp.style.opacity = "1";
 
                 const bookTitle = document.createElement("span");
@@ -218,8 +227,13 @@ window.addEventListener("mouseover", (e) => {
         }
 
         const bookChosen = document.querySelector(".book.book-chosen");
+        const bookChosenRead = document.querySelector(
+            ".book.book-chosen.book-read"
+        );
 
-        if (bookChosen) {
+        if (bookChosenRead) {
+            bookChosenRead.className = "book book-read";
+        } else if (bookChosen) {
             bookChosen.className = "book";
         }
     }

@@ -61,6 +61,10 @@ footer {
     box-shadow: inset 0px -5px 5px 0px rgba(0, 0, 0, 0.7);
 }
 
+.book-read {
+    box-shadow: inset 0px -5px 5px 0px rgba(0, 128, 0, 0.5);
+}
+
 .book > h1 {
     width: 166px;
     font-size: 1.2rem;

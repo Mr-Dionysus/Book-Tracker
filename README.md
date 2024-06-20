@@ -8,10 +8,10 @@
 -   При наведении на книгу можно увидеть меню с дополнительной информацией: название, автор, жанр, количество страниц, прочитано или нет
 -   Адаптивный дизайн при изменении размеров браузера
 -   Изменение вида книги при наведении на нее
+-   Цветное отображение прочитанных книг
 
 ### Можно добавить:
 
--   Цветное отображение прочитанных книг
 -   Добавить базу данных со всеми книгами
 
 # Project
@@ -24,8 +24,8 @@ Project created with starting info from https://www.theodinproject.com They give
 -   Show additional information about book after hovering it. Info: name, author, genre, pages, and read or not read
 -   Adaptive design when changing browser size
 -   Change visual of book when hovering it
+-   Colorful change of read books
 
 ### Can add:
 
--   Colorful change of read books
 -   Add SQL with all books
