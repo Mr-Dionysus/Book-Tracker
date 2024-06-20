@@ -41,12 +41,30 @@ const thinkingFastAndSlow = new Book(
     "Read"
 );
 
-const test = new Book(
-    "1234567890123456",
-    "Author",
-    "Genre",
-    0,
-    "read or not read"
+const atomicHabits = new Book(
+    "Atomic Habits",
+    "James Clear",
+    "Self-Help",
+    320,
+    "Not Read"
+);
+
+const deepWork = new Book("Deep Work", "Cal Newport", "Self-Help", 137, "Read");
+
+const gettingThingsDone = new Book(
+    "Getting Things Done",
+    "David Allen",
+    "Self-Help",
+    246,
+    "Read"
+);
+
+const the4HourWorkweek = new Book(
+    "The 4-Hour Workweek",
+    "Timothy Ferriss",
+    "Self-Help",
+    308,
+    "Not Read"
 );
 
 let books = document.querySelectorAll(".book");
@@ -82,9 +100,11 @@ const showNewBook = function (newBook) {
 };
 
 showNewBook(theHobbit);
-showNewBook(theHobbit);
 showNewBook(thinkingFastAndSlow);
-showNewBook(test);
+showNewBook(atomicHabits);
+showNewBook(deepWork);
+showNewBook(gettingThingsDone);
+showNewBook(the4HourWorkweek);
 
 window.addEventListener("click", (e) => {
     switch (e.target.className) {
