@@ -78,24 +78,23 @@ const showNewBook = function (newBook) {
 };
 
 showNewBook(theHobbit);
+showNewBook(theHobbit);
 showNewBook(thinkingFastAndSlow);
 showNewBook(test);
 
+window.addEventListener("click", (e) => {
+    switch (e.target.className) {
+        case "icon-add-book":
+            popUp.classList.remove("not-visible");
+            break;
+
+        case "icon-close-pop-up":
+            popUp.classList.add("not-visible");
+            break;
+    }
+});
+
 window.addEventListener("mouseover", (e) => {
-    console.log(`e.target = `, e.target);
-    console.log(
-        `e.target.parentElement.className = `,
-        e.target.parentElement.className
-    );
-
-    if (e.target.className === "icon-add-book") {
-        popUp.classList.remove("not-visible");
-    }
-
-    if (e.target.className === "icon-close-pop-up") {
-        popUp.classList.add("not-visible");
-    }
-
     if (e.target.className === "btn-add") {
         e.preventDefault();
         const title = document.querySelector("#title").value;
@@ -116,6 +115,7 @@ window.addEventListener("mouseover", (e) => {
         }
 
         const newBook = new Book(title, author, genre, pages, isRead);
+
         addBookToLibrary(newBook);
         showNewBook(newBook);
 
@@ -145,6 +145,14 @@ window.addEventListener("mouseover", (e) => {
                 allBooks.forEach((oneBook) => {
                     oneBook.className = "book";
                 });
+
+                const hiddenBoxDelete = document.querySelector(
+                    ".b-book > .hidden-box"
+                );
+
+                if (hiddenBoxDelete) {
+                    hiddenBoxDelete.remove();
+                }
 
                 const hiddenBox = document.createElement("div");
                 const bBook = e.target.parentElement.parentElement;
@@ -195,29 +203,25 @@ window.addEventListener("mouseover", (e) => {
 
                 setTimeout(() => {
                     bookPopUp.style.opacity = "1";
-                }, 1);
-
-                console.log(
-                    `e.target.parentElement.parentElement = `,
-                    e.target.parentElement.parentElement
-                );
-                console.log(`e.target.tagName = `, e.target.tagName);
-                console.log(
-                    `e.target.parentElement.className = `,
-                    e.target.parentElement.className
-                );
+                }, 1000);
             }
         });
     }
 
     if (e.target.tagName === "BODY" || e.target.className === "b-shelf") {
-        const bookPopUp = document.querySelector(".book-pop-up");
-        bookPopUp.style.opacity = "0";
-        setTimeout(() => {
-            const hiddenBox = document
-                .querySelector(".b-book > .hidden-box")
-                .remove();
-        }, 1);
+        const hiddenBox = document.querySelector(".b-book > .hidden-box");
+        if (hiddenBox) {
+            setTimeout(() => {
+                hiddenBox.remove();
+            }, 1000);
+            hiddenBox.style.opacity = "0";
+        }
+
+        const bookChosen = document.querySelector(".book.book-chosen");
+
+        if (bookChosen) {
+            bookChosen.className = "book";
+        }
     }
 });
 
