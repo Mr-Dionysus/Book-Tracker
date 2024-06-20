@@ -67,7 +67,8 @@ footer {
     text-align: center;
 }
 
-.book:hover {
+.book:hover,
+.book-chosen {
     box-shadow: inset 0px 0px 15px 0px rgb(0, 0, 0);
 }
 
@@ -86,9 +87,6 @@ footer {
     height: 400px;
     width: 350px;
     position: absolute;
-    /* opacity: 0;
-    visibility: hidden;
-    */
     border-radius: 35px;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.439);
     background: rgba(255, 255, 255, 0.8);
@@ -206,18 +204,33 @@ input#not-read {
 
 .book-pop-up {
     width: 300px;
-    height: 500px;
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 2px solid rgba(128, 128, 128, 0.5);
     border-radius: 25px;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
     opacity: 0;
     transition: opacity 0.3s;
     position: relative;
     left: 80px;
+    bottom: 50px;
+}
+
+.book-pop-up > p {
+    font-weight: bold;
+}
+
+.book-pop-up > p > span {
+    font-weight: 400;
 }
 
 .b-shelf > .icon-add-book:hover {
     transform: scale(1.2);
 }
+
 @media (min-width: 320px) {
     .b-shelf {
         height: 7000px;

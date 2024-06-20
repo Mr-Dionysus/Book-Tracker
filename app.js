@@ -30,7 +30,7 @@ const theHobbit = new Book(
     "J.R.R. Tolkien",
     "Fantasy",
     295,
-    "not read"
+    "Not Read"
 );
 
 const thinkingFastAndSlow = new Book(
@@ -38,7 +38,7 @@ const thinkingFastAndSlow = new Book(
     "Daniel Kahneman",
     "Non-fiction",
     499,
-    "not read"
+    "Not Read"
 );
 
 const test = new Book(
@@ -48,15 +48,13 @@ const test = new Book(
     0,
     "read or not read"
 );
-// Add book on webpage
 
 let books = document.querySelectorAll(".book");
 const shelf = document.querySelector(".b-shelf");
 const popUp = document.querySelector(".pop-up-menu");
 const closePopUp = document.querySelector(".icon-close-pop-up");
 
-library.push(theHobbit);
-library.push(thinkingFastAndSlow);
+// Show book on the screen
 const showNewBook = function (newBook) {
     const bottomBorderBox = document.createElement("div");
     const book = document.createElement("div");
@@ -75,21 +73,21 @@ const showNewBook = function (newBook) {
     bottomBorderBox.append(book);
     shelf.insertBefore(bottomBorderBox, add);
     books = document.querySelectorAll(".book");
+
+    addBookToLibrary(newBook);
 };
+
 showNewBook(theHobbit);
-showNewBook(thinkingFastAndSlow);
-showNewBook(theHobbit);
-showNewBook(theHobbit);
-showNewBook(theHobbit);
-showNewBook(thinkingFastAndSlow);
-showNewBook(thinkingFastAndSlow);
 showNewBook(thinkingFastAndSlow);
 showNewBook(test);
 
-books[0].addEventListener("click", (e) => {});
-
-window.addEventListener("click", (e) => {
+window.addEventListener("mouseover", (e) => {
     console.log(`e.target = `, e.target);
+    console.log(
+        `e.target.parentElement.className = `,
+        e.target.parentElement.className
+    );
+
     if (e.target.className === "icon-add-book") {
         popUp.classList.remove("not-visible");
     }
@@ -105,66 +103,123 @@ window.addEventListener("click", (e) => {
         const genre = document.querySelector("#genre").value;
         const pages = document.querySelector("#pages").value;
 
-        const newBook = new Book(title, author, genre, pages, "read");
-        library.push(newBook);
+        // Add Read or Not Read info
+        const read = document.querySelector("#read");
+        const notRead = document.querySelector("#not-read");
+        let isRead = "";
+        console.log(`read = `, read);
+
+        if (read.checked === true && notRead.checked === false) {
+            isRead = read.value;
+        } else if (read.checked === false && notRead.checked === true) {
+            isRead = notRead.value;
+        }
+
+        const newBook = new Book(title, author, genre, pages, isRead);
+        addBookToLibrary(newBook);
+        showNewBook(newBook);
 
         document.querySelector("#title").value = "";
         document.querySelector("#author").value = "";
         document.querySelector("#genre").value = "";
         document.querySelector("#pages").value = "";
 
-        const bottomBorderBox = document.createElement("div");
-        const book = document.createElement("div");
-        const h1 = document.createElement("h1");
-        const add = document.querySelector(
-            ".b-shelf:nth-of-type(1) .icon-add-book"
-        );
-
-        h1.innerText = title;
-        bottomBorderBox.className = "b-book";
-        book.className = "book";
-        book.append(h1);
-        bottomBorderBox.append(book);
-        shelf.insertBefore(bottomBorderBox, add);
         popUp.classList.add("not-visible");
-        books = document.querySelectorAll(".book");
     }
 
-    if (e.target.tagName === "H1" || e.target.className === "book") {
-        if (e.target.parentElement.className === "book") {
-            library.forEach((book) => {
-                if (book.title === e.target.innerText) {
-                    const hiddenBox = document.createElement("div");
-                    const bBook = e.target.parentElement.parentElement;
-                    const bookPopUp = document.createElement("div");
+    if (
+        (e.target.tagName === "H1" ||
+            e.target.className === "book" ||
+            e.target.className === "b-book") &&
+        (e.target.parentElement.className === "book" ||
+            e.target.parentElement.className === "book book-chosen")
+    ) {
+        library.forEach((book) => {
+            if (book.title === e.target.innerText) {
+                const allPopUpMenu = document.querySelectorAll(".book-pop-up");
+                allPopUpMenu.forEach((onePopUpMenu) => {
+                    onePopUpMenu.style.opacity = "0";
+                });
 
-                    hiddenBox.className = "hidden-box";
-                    bookPopUp.className = "book-pop-up";
-                    hiddenBox.append(bookPopUp);
-                    bBook.append(hiddenBox);
-                    setTimeout(() => {
-                        bookPopUp.style.opacity = "1";
-                    }, 1);
+                const allBooks = document.querySelectorAll(".book.book-chosen");
+                allBooks.forEach((oneBook) => {
+                    oneBook.className = "book";
+                });
 
-                    console.log(
-                        `e.target.parentElement.parentElement = `,
-                        e.target.parentElement.parentElement
-                    );
+                const hiddenBox = document.createElement("div");
+                const bBook = e.target.parentElement.parentElement;
+                const bookPopUp = document.createElement("div");
 
-                    console.log(`e.target.tagName = `, e.target.tagName);
-                }
-            });
-        }
+                hiddenBox.className = "hidden-box";
+                bookPopUp.className = "book-pop-up";
+                e.target.parentElement.className = "book book-chosen";
+                bookPopUp.style.opacity = "1";
+
+                const bookTitle = document.createElement("span");
+                bookTitle.innerHTML = book.title;
+                const bookWhatTitle = document.createElement("p");
+                bookWhatTitle.innerHTML = "Title: ";
+                bookPopUp.append(bookWhatTitle);
+                bookWhatTitle.append(bookTitle);
+
+                const bookAuthor = document.createElement("span");
+                bookAuthor.innerHTML = book.author;
+                const bookWhatAuthor = document.createElement("p");
+                bookWhatAuthor.innerHTML = "Author: ";
+                bookPopUp.append(bookWhatAuthor);
+                bookWhatAuthor.append(bookAuthor);
+
+                const bookGenre = document.createElement("span");
+                bookGenre.innerHTML = book.genre;
+                const bookWhatGenre = document.createElement("p");
+                bookWhatGenre.innerHTML = "Genre: ";
+                bookPopUp.append(bookWhatGenre);
+                bookWhatGenre.append(bookGenre);
+
+                const bookPages = document.createElement("span");
+                bookPages.innerHTML = book.pages;
+                const bookHowManyPages = document.createElement("p");
+                bookHowManyPages.innerHTML = "Pages: ";
+                bookPopUp.append(bookHowManyPages);
+                bookHowManyPages.append(bookPages);
+
+                const bookRead = document.createElement("span");
+                bookRead.innerHTML = book.read;
+                const bookIsRead = document.createElement("p");
+                bookIsRead.innerHTML = "Is Read: ";
+                bookPopUp.append(bookIsRead);
+                bookIsRead.append(bookRead);
+
+                hiddenBox.append(bookPopUp);
+                bBook.append(hiddenBox);
+
+                setTimeout(() => {
+                    bookPopUp.style.opacity = "1";
+                }, 1);
+
+                console.log(
+                    `e.target.parentElement.parentElement = `,
+                    e.target.parentElement.parentElement
+                );
+                console.log(`e.target.tagName = `, e.target.tagName);
+                console.log(
+                    `e.target.parentElement.className = `,
+                    e.target.parentElement.className
+                );
+            }
+        });
     }
 
     if (e.target.tagName === "BODY" || e.target.className === "b-shelf") {
-        const hiddenBox = document
-            .querySelector(".b-book > .hidden-box")
-            .remove();
+        const bookPopUp = document.querySelector(".book-pop-up");
+        bookPopUp.style.opacity = "0";
+        setTimeout(() => {
+            const hiddenBox = document
+                .querySelector(".b-book > .hidden-box")
+                .remove();
+        }, 1);
     }
 });
-
-// Change font-size of name of book by multiply default num to number of symbols
 
 const libraryWidth = window.innerWidth - 320;
 const booksOnShelf = 4 + Math.floor(libraryWidth / 50);
