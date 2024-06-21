@@ -11,6 +11,18 @@ function Book(title, author, genre, pages, read) {
     };
 }
 
+Book.prototype.toggleRead = function () {
+    switch (this.read) {
+        case "Read":
+            this.read = "Not Read";
+            break;
+
+        case "Not Read":
+            this.read = "Read";
+            break;
+    }
+};
+
 function addBookToLibrary(book) {
     return library.push(book);
 }
@@ -81,10 +93,13 @@ const showNewBook = function (newBook) {
         ".b-shelf:nth-of-type(1) .icon-add-book"
     );
 
+    book.dataset.order = library.length;
     h1.innerText = newBook.title;
+
     const h1Length = h1.innerText.length;
     const fontSizeCoefficient = (h1Length - 15) * 0.05;
     h1.style.fontSize = `${1.2 - fontSizeCoefficient}rem`;
+
     bottomBorderBox.className = "b-book";
     book.className = "book";
     book.append(h1);
@@ -148,6 +163,75 @@ window.addEventListener("click", (e) => {
             popUp.classList.add("not-visible");
             break;
     }
+
+    const dialog = document.querySelector("dialog");
+    const deleteBook = document.querySelector(".delete-book");
+    const closeDialog = document.querySelector(".close-dialog");
+    const btnToggleRead = document.querySelector(".toggle-read");
+    const book1 = e.target.parentElement;
+    const book2 = e.target;
+    const bookObj1 = library[book1.dataset.order];
+    const bookObj2 = library[book2.dataset.order];
+
+    if (
+        e.target.parentElement.classList.contains("book") ||
+        e.target.classList.contains("book")
+    ) {
+        dialog.show();
+    }
+
+    deleteBook.onclick = function () {
+        if (book1.classList.contains("book")) {
+            library.splice(book1.dataset.order, 1);
+            book1.parentElement.remove();
+        } else if (book2.classList.contains("book")) {
+            library.splice(book2.dataset.order, 1);
+            book2.parentElement.remove();
+        }
+        dialog.close();
+    };
+
+    closeDialog.onclick = function () {
+        dialog.close();
+    };
+
+    btnToggleRead.onclick = function () {
+        if (book1.classList.contains("book")) {
+            bookObj1.toggleRead();
+
+            switch (bookObj1.read) {
+                case "Read":
+                    book1.className = "book book-read";
+                    break;
+
+                case "Not Read":
+                    book1.className = "book";
+                    break;
+
+                default:
+                    dialog.close();
+                    break;
+            }
+        } else if (book2.classList.contains("book")) {
+            bookObj2.toggleRead();
+
+            switch (bookObj2.read) {
+                case "Read":
+                    book2.className = "book book-read";
+                    break;
+
+                case "Not Read":
+                    book2.className = "book";
+                    break;
+
+                default:
+                    dialog.close();
+                    break;
+            }
+        }
+
+        dialog.close();
+    };
 });
 
 window.addEventListener("mouseover", (e) => {
